@@ -1,0 +1,11 @@
+.button-delete i{
+    color: #f80000;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.button-delete i:hover{
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+}
