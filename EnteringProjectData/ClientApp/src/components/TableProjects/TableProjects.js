@@ -2,6 +2,7 @@ import React from "react";
 import {useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ButtonDelete } from "../ButtonDelete/ButtonDelete";
+import './TableProjects.css';
 export function TableProjects(props){
     const [Data, setData] = useState([]);
 
@@ -36,8 +37,8 @@ export function TableProjects(props){
               <td>{cell.endDates}</td>
               <td>{cell.priority}</td>
               <td>
-              <ButtonDelete delete={Delete} id={cell.id}></ButtonDelete>
-                <Link to={`/project/${cell.id}`}><i className="fa-solid fa-pen-to-square"></i></Link>
+                <ButtonDelete delete={Delete} id={cell.id}></ButtonDelete>
+                <Link to={`/project/${cell.id}`}><i className="fa-solid fa-pen-to-square Button-edit"></i></Link>
               </td>
             </tr>
           ))}

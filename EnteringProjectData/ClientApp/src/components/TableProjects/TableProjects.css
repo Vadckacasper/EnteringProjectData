@@ -1,0 +1,10 @@
+.Button-edit{
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.Button-edit:hover{
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+}
