@@ -1,14 +1,14 @@
 import React from "react";
 import {useState, useEffect } from "react";
 import {TableProjects} from "../TableProjects/TableProjects";
-
+import { Link } from "react-router-dom";
 export function Home(){
 
   const [Data, setData] = useState([]);
 
   useEffect(() => {
     Load();
-  },[]);
+  },[Data]);
 
 const Load = async() => {
     const response = await fetch('api/projects');
@@ -19,17 +19,11 @@ const Load = async() => {
     }
   }
 
-const Delete = (id) =>{
-  const data = this.state.data.filter(i => i.id !== id)
-  setData({data})
-}
 
-const Update = (value) =>{
-    setData({films: value});
-  }
     return(
       <div>
-       <TableProjects data={Data} delete={Delete} />
+       <TableProjects data={Data} />
+        <Link to={"/project/create"}>Создать проект</Link>
       </div>
     );
   
