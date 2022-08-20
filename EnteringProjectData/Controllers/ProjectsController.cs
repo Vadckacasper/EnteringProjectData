@@ -80,13 +80,13 @@ public class ProjectsController : ControllerBase
     // POST: api/Projects
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Project>> PostProject(Project project)
+    public async Task<ActionResult<Project>> PostProject([FromBody] Project project)
     {
       if (_context.Projects == null)
       {
           return Problem("Entity set 'EnteringProjectDataContext.Projects'  is null.");
       }
-        _context.Projects.Add(project);
+       _context.Projects.Add(project);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction("GetProject", new { id = project.Id }, project);
