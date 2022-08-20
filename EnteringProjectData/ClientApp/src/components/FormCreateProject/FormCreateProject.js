@@ -1,24 +1,20 @@
 import React from "react";
-
+import {useState} from "react";
 export function FormCreateProject() {
-  
+  const [Data, setData] = useState(0);
+
   const Post = async (event) => {
     await event.preventDefault();
-
-    event.preventDefault();
-    var data = new FormData(event.target);
-    let formObject = Object.fromEntries(data.entries());
-    document.getElementById("create-project-form").reset();
-
     const project = {
-      Name: formObject.Name,
-      CustomerCompany: formObject.CustomerCompany,
-      ImplementingCompany: formObject.ImplementingCompany,
-      StartDates: formObject.StartDates,
-      EndDates: formObject.EndDates,
-      Priority: formObject.Priority,
+      Name: Data.name,
+      CustomerCompany: Data.customerCompany,
+      ImplementingCompany: Data.implementingCompany,
+      StartDates: Data.startDates,
+      EndDates: Data.endDates,
+      Priority: Data.priority,
       Id_Manager: 1,
     };
+
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -27,6 +23,10 @@ export function FormCreateProject() {
     await fetch("/api/projects", requestOptions);
   };
 
+  const handleInputChange = (e) => {
+    setData({...Data, [e.target.name]: e.target.value});
+}
+
   return (
     <form onSubmit={Post} id="create-project-form">
       <div className="mb-3">
@@ -34,8 +34,9 @@ export function FormCreateProject() {
         <input
           type="text"
           className="form-control"
-          name="Name"
+          name="name"
           maxLength={50}
+          onChange={handleInputChange}
           required
         />
       </div>
@@ -44,8 +45,9 @@ export function FormCreateProject() {
         <input
           type="text"
           className="form-control"
-          name="CustomerCompany"
+          name="customerCompany"
           maxLength={50}
+          onChange={handleInputChange}
           required
         />
       </div>
@@ -54,8 +56,9 @@ export function FormCreateProject() {
         <input
           type="text"
           className="form-control"
-          name="ImplementingCompany"
+          name="implementingCompany"
           maxLength={50}
+          onChange={handleInputChange}
           required
         />
       </div>
@@ -65,7 +68,8 @@ export function FormCreateProject() {
           <input
             type="date"
             className="form-control"
-            name="StartDates"
+            name="startDates"
+            onChange={handleInputChange}
             required
           />
         </div>
@@ -74,7 +78,8 @@ export function FormCreateProject() {
           <input
             type="date"
             className="form-control"
-            name="EndDates"
+            name="endDates"
+            onChange={handleInputChange}
             required
           />
         </div>
@@ -84,7 +89,8 @@ export function FormCreateProject() {
             type="number"
             min="1"
             className="form-control"
-            name="Priority"
+            name="priority"
+            onChange={handleInputChange}
             required
           />
         </div>
