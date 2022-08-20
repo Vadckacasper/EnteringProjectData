@@ -2,13 +2,12 @@ import React from "react";
 import './ButtonDelete.css';
 export function ButtonDelete(props) {
 
-    const Delete = (id) =>{
-        props.delete(id);
-    }
-
+  const Delete = () =>{
+    props.delete(props.id);
+  }
   return (
     <div className="button-delete">
-      <i className="fa-solid fa-trash-can" onClick={Delete(props.id)}></i>
+      <i className="fa-solid fa-trash-can" onClick={Delete}></i>
     </div>
   );
 }

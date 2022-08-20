@@ -10,11 +10,7 @@ export function TableProjects(props){
     },[props]);
     
     const Delete = async (id) =>{
-      const response = await fetch(`api/projects/${id}`, { method: 'DELETE' });
-      if(response.ok)
-      {
-        props.delete(id);
-      }
+      await fetch(`api/projects/${id}`, { method: 'DELETE' });
     }
 
     const renderTable = (Data) =>{
@@ -41,7 +37,7 @@ export function TableProjects(props){
               <td>{cell.priority}</td>
               <td>
               <ButtonDelete delete={Delete} id={cell.id}></ButtonDelete>
-                <Link to={`/project/${cell.id}`}><i class="fa-solid fa-pen-to-square"></i></Link>
+                <Link to={`/project/${cell.id}`}><i className="fa-solid fa-pen-to-square"></i></Link>
               </td>
             </tr>
           ))}
