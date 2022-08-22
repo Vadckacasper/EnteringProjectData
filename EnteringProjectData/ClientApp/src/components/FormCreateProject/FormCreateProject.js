@@ -20,7 +20,10 @@ export function FormCreateProject() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(project),
     };
-    await fetch("/api/projects", requestOptions);
+    const response = await fetch("/api/projects", requestOptions);
+    if(response.ok){
+      document.getElementById("create-project-form").reset();
+    }
   };
 
   const handleInputChange = (e) => {

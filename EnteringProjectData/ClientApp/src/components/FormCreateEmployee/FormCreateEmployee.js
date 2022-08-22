@@ -1,7 +1,7 @@
 import React from "react"
 import {useState} from "react";
 
-export function FormCreateEmployee() {
+export function FormCreateEmployee(props) {
 
     const [Data, setData] = useState(0);
 
@@ -19,7 +19,12 @@ export function FormCreateEmployee() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(employee),
       };
-      await fetch("/api/employees", requestOptions);
+      const response = await fetch("/api/employees", requestOptions);
+
+      if(response.ok){
+        props.update();
+        document.getElementById("create-employee-form").reset();
+      }
     };
 
   const handleInputChange = (e) => {
@@ -27,11 +32,11 @@ export function FormCreateEmployee() {
 }
 
   return (
-    <form onSubmit={Post} id="create-employee-form">     
+    <form className="mt-3 mb-2" onSubmit={Post} id="create-employee-form">     
       <div className="row">
         <div className="col">
-          <label className="form-label">Имя</label>
           <input
+            placeholder="Имя"
             type="text"
             className="form-control"
             name="name"           
@@ -40,8 +45,8 @@ export function FormCreateEmployee() {
           />
         </div>
         <div className="col">
-          <label className="form-label">Фамилия</label>
           <input
+          placeholder="Фамилия"
             type="text"
             className="form-control"
             name="surname"
@@ -50,8 +55,8 @@ export function FormCreateEmployee() {
           />
         </div>
         <div className="col">
-          <label className="form-label">Отчество</label>
           <input
+          placeholder="Отчество"
             type="text"
             className="form-control"
             name="patronymic"
@@ -59,16 +64,16 @@ export function FormCreateEmployee() {
           />
         </div>
         <div className="col">
-          <label className="form-label">Почта</label>
           <input
+          placeholder="Почта"
             type="email"
             className="form-control"
             name="email"
             onChange={handleInputChange}
           />
         </div>
-        <button type="submit" className="btn btn-outline-primary mt-2 col">
-        Отправить
+        <button type="submit" className="btn btn-outline-primary col">
+        Добавить
       </button>
       </div>
     </form>

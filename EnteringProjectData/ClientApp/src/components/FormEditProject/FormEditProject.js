@@ -1,7 +1,9 @@
 import React from "react";
 import {useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { FormCreateEmployee } from "../FormCreateEmployee/FormCreateEmployee";
+import { FormAddEmployee } from "../FormAddEmployee/FormAddEmployee";
+import { ListEmployees } from "../ListEmployees/ListEmployees";
+
 export function FormEditProject() {
     const [Data, setData] = useState(0);
     const params = useParams();
@@ -88,12 +90,12 @@ export function FormEditProject() {
         <div className="col">
           <label className="form-label">Дата начала</label>
           <input
+          
             type="date"
             className="form-control"
             name="startDates"
-            
+            value={Data.startDates}
             onChange={handleInputChange}
-            required
           />
         </div>
         <div className="col">
@@ -102,9 +104,8 @@ export function FormEditProject() {
             type="date"
             className="form-control"
             name="endDates"
-            
+            value={Data.endDates}
             onChange={handleInputChange}
-            required
           />
         </div>
         <div className="col">
@@ -124,7 +125,8 @@ export function FormEditProject() {
         Отправить
       </button>
     </form>
-    <FormCreateEmployee></FormCreateEmployee>
+    <FormAddEmployee id={Id} />
+    <ListEmployees id={Id} />
     </div>
   );
 }
