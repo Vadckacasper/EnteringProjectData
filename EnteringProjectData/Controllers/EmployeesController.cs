@@ -17,10 +17,10 @@ public class EmployeesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
     {
-      if (_context.Employees == null)
-      {
-          return NotFound();
-      }
+        if (_context.Employees == null)
+        {
+            return NotFound();
+        }
         return await _context.Employees.ToListAsync();
     }
 
@@ -28,10 +28,10 @@ public class EmployeesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Employee>> GetEmployee(int id)
     {
-      if (_context.Employees == null)
-      {
-          return NotFound();
-      }
+        if (_context.Employees == null)
+        {
+            return NotFound();
+        }
         var employee = await _context.Employees.FindAsync(id);
 
         if (employee == null)
@@ -40,6 +40,46 @@ public class EmployeesController : ControllerBase
         }
 
         return employee;
+    }
+
+    [HttpGet("_project/{id}")]
+    public async Task<ActionResult<IEnumerable<Employee>>> GetEmployeeByIdProjectAsync(int id)
+    {
+        if (_context.Projects == null)
+        {
+            return NotFound();
+        }
+
+        var employees = await _context.ProjectsEmployees.Include(x => x.Employee).
+            Where(x => x.Id_Project == id).
+            Select(x => x.Employee).
+            ToArrayAsync();
+
+        return employees;
+    }
+
+    [HttpGet("_search{FullName}:{id}")]
+    public async Task<ActionResult<IEnumerable<Employee>>> GetEmployeeSearchAsync(string FullName, int id)
+    {
+        if (_context.Employees == null || FullName is null)
+        {
+            return NotFound();
+        }
+        var idEmployee = _context.ProjectsEmployees.Where(x => x.Id_Project == id).Select(x => x.Id_Employee).ToArray();
+        var employees = await _context.ProjectsEmployees.
+                Include(x => x.Employee).
+                Where(x =>
+                    !idEmployee.Contains(x.Employee.Id) &&
+                    (
+                    (x.Employee.Suname + " " + x.Employee.Name + " " + x.Employee.Patronymic).StartsWith(FullName) ||
+                    (x.Employee.Name + " " + x.Employee.Suname + " " + x.Employee.Patronymic).StartsWith(FullName)
+                    )).
+                Select(x => x.Employee).
+                Take(5).
+                ToArrayAsync();
+
+
+        return employees;
     }
 
     // PUT: api/Employees/5
@@ -78,10 +118,10 @@ public class EmployeesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Employee>> PostEmployee([FromBody] Employee employee)
     {
-      if (_context.Employees == null)
-      {
-          return Problem("Entity set 'EnteringProjectDataContext.Employees'  is null.");
-      }
+        if (_context.Employees == null)
+        {
+            return Problem("Entity set 'EnteringProjectDataContext.Employees'  is null.");
+        }
         _context.Employees.Add(employee);
         await _context.SaveChangesAsync();
 
