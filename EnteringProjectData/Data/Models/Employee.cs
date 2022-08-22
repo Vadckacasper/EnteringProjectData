@@ -13,4 +13,5 @@ public class Employee
     [MaxLength(32)]
     public string Email { get; set; } = null!;  
     public IEnumerable<ProjectsEmployee>? Projects { get; set; }
+
 }

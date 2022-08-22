@@ -1,5 +1,15 @@
 ﻿namespace EnteringProjectData.Models;
 
+public enum SortState
+{
+    NameSort,
+    CustomerCompanySort,
+    ImplementingCompanySort,
+    StartDatesSort,
+    EndDatesSort,
+    PrioritySort
+}
+
 public class Project
 {
     [Key]
