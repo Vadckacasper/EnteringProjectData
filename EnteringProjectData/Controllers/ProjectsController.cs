@@ -28,6 +28,62 @@ public class ProjectsController : ControllerBase
         return await _context.Projects.ToListAsync();
     }
 
+    [HttpGet("_filterDate{start}:{end}")]
+    public async Task<ActionResult<IEnumerable<Project>>> GetFilterDate(DateTime start, DateTime end)
+    {
+        if (_context.Projects == null)
+        {
+            return NotFound();
+        }
+        if(start > end)
+        {
+            return NotFound();
+        }
+        return await _context.Projects.Where(x => x.StartDates >= start && x.EndDates <= end).ToArrayAsync();
+    }
+
+    [HttpGet("_sortName{sortProject}:{flag}")]
+    public async Task<ActionResult<IEnumerable<Project>>> GetSortProject(SortState sortProject, bool flag)
+    {
+        if (_context.Projects == null)
+        {
+            return NotFound();
+        }
+
+        var projects = sortProject switch
+        {
+            SortState.NameSort => flag ?
+            _context.Projects.OrderBy(x => x.Name) :
+            _context.Projects.OrderByDescending(x => x.Name),
+
+            SortState.CustomerCompanySort => flag ?
+            _context.Projects.OrderBy(x => x.CustomerCompany) :
+            _context.Projects.OrderByDescending(x => x.CustomerCompany),
+
+            SortState.ImplementingCompanySort => flag ?
+            _context.Projects.OrderBy(x => x.ImplementingCompany) :
+            _context.Projects.OrderByDescending(x => x.ImplementingCompany),
+
+            SortState.StartDatesSort => flag ?
+            _context.Projects.OrderBy(x => x.StartDates) :
+            _context.Projects.OrderByDescending(x => x.StartDates),
+
+            SortState.EndDatesSort => flag ?
+            _context.Projects.OrderBy(x => x.EndDates) :
+            _context.Projects.OrderByDescending(x => x.EndDates),
+
+            SortState.PrioritySort => flag ?
+            _context.Projects.OrderBy(x => x.Priority) :
+            _context.Projects.OrderByDescending(x => x.Priority),
+
+            _ => _context.Projects.OrderBy(x => x.Id),
+
+        };
+
+        return await projects.ToArrayAsync();
+    }
+
+
     // GET: api/Projects/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Project>> GetProject(int id)
