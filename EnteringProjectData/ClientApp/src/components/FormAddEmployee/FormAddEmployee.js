@@ -18,9 +18,16 @@ export function FormAddEmployee(props) {
     }
   };
 
+  const Update = () =>{
+    props.update();
+    document.getElementById("create-employee-form").reset();
+    setEmployees([]);
+    renderEmployeesData(Employees);
+  }
+
   const renderEmployeesData = (Employees) => {
     return Employees.map((employee, key) => (
-      <Employee key={key} idProject={props.id} employee={employee} />
+      <Employee key={key} idProject={props.id} employee={employee} update={Update} />
     ));
   };
 
