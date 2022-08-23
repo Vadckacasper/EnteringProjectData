@@ -1,51 +1,78 @@
 import React from "react";
-import {useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ButtonDelete } from "../ButtonDelete/ButtonDelete";
 
-export function ListEmployees(props){
+export function ListEmployees(props) {
+  const [Employees, setEmployees] = useState([]);
 
-    const [Employees, setEmployees] = useState([]);
+  useEffect(() => {
+    setEmployees(props.employees);
+  }, [props]);
 
-    useEffect(() => {
-      Load();
-    },[props.id]);
-    
-    const Load = async() => {
-        const response = await fetch(`api/employees/_project/${props.id}`);
-        if (response.ok) {
-        const data = await response.json();
-        setEmployees(data);
-        }
-      }
+  const Delete = async (id) => {
+    const response = await fetch(`api/projectsEmployees/${props.id}:${id}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      props.update();
+    }
+  };
 
-      const Delete = async (id) =>{
-        const response = await fetch(`api/projectsEmployees/${props.id}:${id}`, { method: 'DELETE' });
-        if(response.ok){
-          Load();
-        }
-      }
+  const ChangeRadio = async (event) => {
+    props.put(event.target.id)
+  };
 
-      const ChangeRadio = async (event) =>{
-        const response = await fetch(`api/projects/_addManager${props.id}:${event.target.id}`);
-      }
-  
-      const renderList = (Data) =>{
-          return(
-            <ol class="list-group list-group-numbered">
-            {Data.map((data) => (             
-              <li key={data.id} className="list-group-item w-50 d-flex justify-content-between align-items-center">{data.name} {data.suname} {data.patronymic} {data.email}
-              <input className="form-check-input" type="radio" name="flexRadioDisabled" id={data.id} onChange={ChangeRadio} />
-              <ButtonDelete delete={Delete} id={data.id}/>
-              </li>
-            ))}
-            </ol>
-          );
-      }
+  const addInput = (id) => {
+    if (props.id_Manager === id)
+    {
+      return(
+      <input
+        id={id}
+        className="form-check-input me-3"
+        type="radio"
+        name="flexRadioDisabled"
+        onChange={ChangeRadio}
+        checked
+      />)
+    }
+    else
+    {
+      return(
+      <input
+        id={id}
+        className="form-check-input me-3"
+        type="radio"
+        name="flexRadioDisabled"
+        onChange={ChangeRadio}
+      />)
+    }
+  };
 
-    return(
-        <div>
-             <h5 className="mt-4">Список сотрудников:</h5>
-             {renderList(Employees)}
-        </div>
+  const renderList = (Data) => {
+    return (
+      <ol className="list-group list-group">
+        {Data.map((data) => (
+          <li
+            key={data.id}
+            className="list-group-item w-50 d-flex justify-content-between"
+          >
+            <div>
+              {data.name} {data.suname} {data.patronymic} {data.email}
+            </div>
+            <div className="d-flex">
+              {addInput(data.id)}
+              <ButtonDelete delete={Delete} id={data.id} />
+            </div>
+          </li>
+        ))}
+      </ol>
     );
+  };
+
+  return (
+    <div>
+      <h5 className="mt-4">Список сотрудников:</h5>
+      {renderList(Employees)}
+    </div>
+  );
 }

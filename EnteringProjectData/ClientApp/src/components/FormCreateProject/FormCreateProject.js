@@ -12,7 +12,6 @@ export function FormCreateProject() {
       StartDates: Data.startDates,
       EndDates: Data.endDates,
       Priority: Data.priority,
-      Id_Manager: 1,
     };
 
     const requestOptions = {

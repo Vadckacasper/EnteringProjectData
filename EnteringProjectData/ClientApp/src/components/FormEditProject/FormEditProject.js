@@ -6,11 +6,13 @@ import { ListEmployees } from "../ListEmployees/ListEmployees";
 
 export function FormEditProject() {
     const [Data, setData] = useState(0);
+    const [Employees, setEmployees] = useState([]);
     const params = useParams();
     const Id = params.id;
 
     useEffect(() => {
         Load();
+        LoadEmloyee();
       },[Id]);
 
     const Load = async() => {
@@ -18,6 +20,14 @@ export function FormEditProject() {
         if (response.ok) {
         const data = await response.json();
         setData(data);
+        }
+      }
+
+      const LoadEmloyee = async() => {
+        const response = await fetch(`api/employees/_project/${Id}`);
+        if (response.ok) {
+        const data = await response.json();
+        setEmployees(data);
         }
       }
 
@@ -32,7 +42,7 @@ export function FormEditProject() {
       StartDates: Data.startDates,
       EndDates: Data.endDates,
       Priority: Data.priority,
-      Id_Manager: 1,
+      Id_Manager: Data.id_Manager,
     };
 
     const requestOptions = {
@@ -46,6 +56,10 @@ export function FormEditProject() {
   const handleInputChange = (e) => {
     setData({...Data, [e.target.name]: e.target.value});
 }
+
+  const IdManagerChahge = (id_Manager) =>{
+    setData({...Data, id_Manager: id_Manager});
+  }
 
   return (
     <div>
@@ -125,8 +139,8 @@ export function FormEditProject() {
         Отправить
       </button>
     </form>
-    <FormAddEmployee id={Id} />
-    <ListEmployees id={Id} />
+    <FormAddEmployee id={Id} update={LoadEmloyee} />
+    <ListEmployees id={Id} id_Manager={Data.id_Manager} put={IdManagerChahge} employees={Employees} update={LoadEmloyee} />
     </div>
   );
 }
