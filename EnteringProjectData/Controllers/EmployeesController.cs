@@ -66,15 +66,13 @@ public class EmployeesController : ControllerBase
             return NotFound();
         }
         var idEmployee = _context.ProjectsEmployees.Where(x => x.Id_Project == id).Select(x => x.Id_Employee).ToArray();
-        var employees = await _context.ProjectsEmployees.
-                Include(x => x.Employee).
+        var employees = await _context.Employees.
                 Where(x =>
-                    !idEmployee.Contains(x.Employee.Id) &&
+                    !idEmployee.Contains(x.Id) &&
                     (
-                    (x.Employee.Suname + " " + x.Employee.Name + " " + x.Employee.Patronymic).StartsWith(FullName) ||
-                    (x.Employee.Name + " " + x.Employee.Suname + " " + x.Employee.Patronymic).StartsWith(FullName)
+                    (x.Suname + " " + x.Name + " " + x.Patronymic).StartsWith(FullName) ||
+                    (x.Name + " " + x.Suname + " " + x.Patronymic).StartsWith(FullName)
                     )).
-                Select(x => x.Employee).
                 Take(5).
                 ToArrayAsync();
 
