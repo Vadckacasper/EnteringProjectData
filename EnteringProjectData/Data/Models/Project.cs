@@ -24,7 +24,7 @@ public class Project
     public DateTime EndDates { get; set; }
     [Required]
     public int Priority { get; set; }
-    public int Id_Manager { get; set; }
+    public int? Id_Manager { get; set; }
     public IEnumerable<ProjectsEmployee>? Employees { get; set; }
 
 }
