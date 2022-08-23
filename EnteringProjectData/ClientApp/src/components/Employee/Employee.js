@@ -9,7 +9,7 @@ export function Employee(props) {
   }, [props]);
 
 
-  const addEmployee = async () =>
+  const addEmployee = async (e) =>
   {
     const projectsEmployee = {
       Id_Project: props.idProject,
@@ -23,7 +23,7 @@ export function Employee(props) {
     };
     const response = await fetch(`/api/projectsEmployees`, requestOptions);
      if (response.ok) {
-        window.location.reload();
+      props.update();
       }
     }
 
